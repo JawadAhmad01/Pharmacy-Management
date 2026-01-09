@@ -1,0 +1,265 @@
+@if (showForm === false) {
+<div class="min-h-screen bg-gray-50 text-gray-800 p-4 md:p-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Medicines</h1>
+        <p class="text-sm text-gray-500 mt-1">Inventory overview and stock status</p>
+      </div>
+
+      <button
+        (click)="toggleForm()"
+        class="px-4 py-2 cursor-pointer bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+      >
+        + Add Medicine
+      </button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <p class="text-sm text-gray-500">Total Medicines</p>
+        <h2 class="text-2xl font-bold mt-1">{{ totalMeds }}</h2>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <p class="text-sm text-gray-500">Low Stock</p>
+        <h2 class="text-2xl font-bold text-yellow-600 mt-1">{{ lowStock }}</h2>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <p class="text-sm text-gray-500">Expire Soon</p>
+        <h2 class="text-2xl font-bold text-red-600 mt-1">{{ expireSoon }}</h2>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <p class="text-sm text-gray-500">Out of Stock</p>
+        <h2 class="text-2xl font-bold text-gray-800 mt-1">{{ stockOut }}</h2>
+      </div>
+    </div>
+
+    <!-- Medicines Table -->
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold">Medicine List</h2>
+            <button (click)="getMedicnes()" class="font-medium text-blue-500 cursor-pointer">
+              refresh🔃
+            </button>
+          </div>
+          <div class="flex items-center">
+            <div class="flex mr-2">
+              <label class="block mr-2 text-gray-500 mb-1">Filter</label>
+              <select
+                (change)="searchByCatlog()"
+                [(ngModel)]="filterVal"
+                class="bg-indigo-100 cursor-pointer py-1 px-3 rounded"
+              >
+                <option value="All">All</option>
+                <option value="Tablet">Tablet</option>
+                <option value="Syrup">Syrup</option>
+                <option value="Injection">Injection</option>
+              </select>
+            </div>
+            <div>
+              <input
+                [(ngModel)]="searchVal"
+                (input)="search()"
+                type="search"
+                class="bg-indigo-100 py-1 px-3 rounded"
+                placeholder="Search Medicine"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-500">
+            <tr>
+              <th class="px-6 py-3 text-left">Medicine</th>
+              <th class="px-6 py-3 text-left">Manufacturer</th>
+              <th class="px-6 py-3 text-left">Category</th>
+              <th class="px-6 py-3 text-left">Stock</th>
+              <th class="px-6 py-3 text-left">Expiry</th>
+              <th class="px-6 py-3 text-left">Action</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y">
+            @for (item of medicinesArr; track $index) {
+            <tr class="hover:bg-gray-50 all">
+              <td class="px-6 py-3 font-medium name">{{ item.medname }}</td>
+              <td class="px-6 py-3 manufacturer">{{ item.manufacturer }}</td>
+              <td class="px-6 py-3">{{ item.category }}</td>
+
+              <td [ngClass]="item.qty < 20 ? 'text-red-600' : 'text-green-500'" class="px-6 py-3">
+                {{ item.qty }}
+              </td>
+              <td class="px-6 py-3">
+                <div class="flex flex-col">
+                  <span>{{ item.expiry | date : 'short' }}</span>
+
+                  <span [ngClass]="item.daysLeft < 10 ? 'text-red-500' : 'text-green-500'"
+                    >{{ item.daysLeft }} days</span
+                  >
+                </div>
+              </td>
+
+              <td class="px-6 py-3">
+                <button
+                  (click)="toggleForm()"
+                  (click)="forEdit(item)"
+                  class="text-blue-600 cursor-pointer bg-blue-100 hover:bg-blue-200 rounded px-2 mr-2"
+                >
+                  Edit
+                </button>
+                <button
+                  (click)="deleteMed(item.id)"
+                  class="text-red-400 hover:bg-red-100 border border-red-100 rounded hover:text-red-600 cursor-pointer px-2"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+
+            }
+            <tr>
+              @if (invalidQ) {
+              <td class="px-6 py-3 font-medium text-red-500">No results Found</td>
+              }
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+} @else{
+<div class="min-h-screen bg-gray-50 text-gray-800 p-4 md:p-6">
+  <form [formGroup]="newMedForm" (ngSubmit)="onSubmit()">
+    <div class="max-w-6xl mx-auto space-y-6">
+      <div>
+        <h1 class="text-2xl font-bold">Add Medicine</h1>
+        <p class="text-sm text-gray-500 mt-1">Add new medicines into pharmacy inventory</p>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h2 class="text-lg font-semibold">Medicine Information</h2>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+          <div>
+            <label class="block text-gray-500 mb-1">Medicine Name</label>
+            <input
+              formControlName="medname"
+              type="text"
+              placeholder="e.g. Panadol"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Category</label>
+            <select formControlName="category" class="w-full px-3 py-2 border rounded-lg bg-white">
+              <option>Select category</option>
+              <option>Tablet</option>
+              <option>Syrup</option>
+              <option>Injection</option>
+              <option>Cream</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Manufacturer</label>
+            <input
+              formControlName="manufacturer"
+              type="text"
+              placeholder="Company name"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Expiry Date</label>
+            <input
+              formControlName="expiry"
+              type="date"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Purchase Price</label>
+            <input
+              type="number"
+              formControlName="purchaseprice"
+              placeholder="PKR"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Selling Price</label>
+            <input
+              type="number"
+              formControlName="sellprice"
+              placeholder="PKR"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-500 mb-1">Quantity</label>
+            <input
+              formControlName="qty"
+              type="number"
+              placeholder="Stock quantity"
+              class="w-full px-3 py-2 border rounded-lg"
+            />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-gray-500 mb-1">Description</label>
+            <textarea
+              formControlName="desc"
+              rows="3"
+              placeholder="Optional notes..."
+              class="w-full px-3 py-2 border rounded-lg resize-none"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+          <button
+            type="submit"
+            class="cursor-pointer font-medium px-5 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700 transition"
+          >
+            Save Medicine
+          </button>
+
+          <button
+            type="reset"
+            (click)="newMedForm.reset()"
+            class="px-5 py-2 rounded-lg cursor-pointer font-medium text-red-500 border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            (click)="toggleForm()"
+            class="px-5 py-2 rounded-lg cursor-pointer font-medium text-red-500 border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition"
+          >
+            Hide form
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+}

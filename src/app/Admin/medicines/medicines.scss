@@ -1,0 +1,14 @@
+input,
+textarea,
+select {
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: gray;
+}
+label {
+  color: blue;
+}

@@ -1,0 +1,209 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-6">
+  <div class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between">
+      <div>
+        <h1
+          class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+        >
+          PharmaCare Dashboard
+        </h1>
+        <p class="text-gray-600 mt-2">Manage your pharmacy inventory and analytics</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div
+      class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg p-6 border border-blue-100 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-r from-blue-100 to-transparent rounded-full -mr-10 -mt-10"
+      ></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-600 mb-2">Total Medicines</p>
+          <h2 class="text-3xl font-bold text-gray-800">{{ dataArr.length }}</h2>
+          <p class="text-green-600 text-sm mt-2">
+            <i class="fas fa-arrow-up mr-1"></i> 12% from last month
+          </p>
+        </div>
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center shadow-md"
+        >
+          <i class="fas fa-pills text-white text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-br from-white to-amber-50 rounded-2xl shadow-lg p-6 border border-amber-100 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-r from-amber-100 to-transparent rounded-full -mr-10 -mt-10"
+      ></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-600 mb-2">Low Stock Alert</p>
+          <h2 class="text-3xl font-bold text-amber-600">{{ lowStock }}</h2>
+          <p class="text-amber-600 text-sm mt-2">
+            <i class="fas fa-exclamation-circle mr-1"></i> Requires attention
+          </p>
+        </div>
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-amber-500 to-orange-400 flex items-center justify-center shadow-md"
+        >
+          <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-br from-white to-indigo-100 rounded-2xl shadow-lg p-6 border border-indigo-100 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-r from-indigo-100 to-transparent rounded-full -mr-10 -mt-10"
+      ></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-600 mb-2">OverAll Sales</p>
+          <h2 class="text-3xl font-bold text-gray-800">{{ revenue }}</h2>
+          <p class="text-indigo-600 text-sm mt-2">
+            <i class="fas fa-rupee-sign mr-1"></i> {{ overallTran }} transactions today
+          </p>
+        </div>
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-400 flex items-center justify-center shadow-md"
+        >
+          <i class="fas fa-rupee-sign text-white text-xl"></i>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-br from-white to-emerald-50 rounded-2xl shadow-lg p-6 border border-emerald-100 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-r from-emerald-100 to-transparent rounded-full -mr-10 -mt-10"
+      ></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-600 mb-2">Today's Sales</p>
+          <h2 class="text-3xl font-bold text-gray-800">{{ todayrevenue }}</h2>
+          <p class="text-emerald-600 text-sm mt-2">
+            <i class="fas fa-rupee-sign mr-1"></i> {{ todayTran }} transactions today
+          </p>
+        </div>
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-green-400 flex items-center justify-center shadow-md"
+        >
+          <i class="fas fa-rupee-sign text-white text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-br from-white to-rose-50 rounded-2xl shadow-lg p-6 border border-rose-100 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-r from-rose-100 to-transparent rounded-full -mr-10 -mt-10"
+      ></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-600 mb-2">Expired Items</p>
+          <h2 class="text-3xl font-bold text-rose-600">{{ expired }}</h2>
+          <p class="text-rose-600 text-sm mt-2"><i class="fas fa-clock mr-1"></i> Need disposal</p>
+        </div>
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-rose-500 to-pink-400 flex items-center justify-center shadow-md"
+        >
+          <i class="fas fa-clock text-white text-xl"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-gray-800">Sales Overview</h3>
+      </div>
+      <div
+        highchartsChart
+        [update]="true"
+        [update]="updateFlag"
+        [options]="chartOptions"
+        class="chart"
+        class="h-64 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl chart flex items-center justify-center"
+      >
+        <div></div>
+      </div>
+      <div class="mt-6 grid grid-cols-3 gap-4">
+        <div class="text-center p-4 bg-blue-50 rounded-lg">
+          <p class="text-gray-600">This Week</p>
+          <p class="text-xl font-bold text-blue-600">{{ sales }}</p>
+        </div>
+
+        <div class="text-center p-4 bg-purple-50 rounded-lg">
+          <p class="text-gray-600">Avg. Daily</p>
+          <p class="text-xl font-bold text-purple-600">{{ avgSales }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-6">Low Stock Alert</h3>
+      <div class="space-y-4 overflow-y-auto max-h-[400px] lowstock">
+        @for (item of dataArr; track $index) {
+        <div class="flex items-center justify-between p-4 bg-amber-50 rounded-xl">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-4">
+              <i class="fas fa-capsules text-amber-600"></i>
+            </div>
+            <div>
+              <p class="font-medium">{{ item.medname }}</p>
+              <p class="text-sm text-gray-600">qty {{ item.qty }}</p>
+              <p class="text-sm text-gray-600">price{{ item.sellprice }}</p>
+            </div>
+          </div>
+          <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm">Low</span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-gray-800">Recent Transactions</h3>
+      <button class="text-blue-600 font-medium flex items-center">
+        <i class="fas fa-list mr-2"></i> View All
+      </button>
+    </div>
+    <div
+      class="overflow-x-hidden md:overflow-x-auto scrollbar-thin md:scrollbar-thumb-gray-300 md:scrollbar-track-gray-100"
+    >
+      <table class="w-full min-w-[500px] sm:min-w-[600px] md:min-w-[900px]">
+        <thead>
+          <tr class="border-b">
+            <th class="text-left py-3 text-gray-600">Customer</th>
+            <th class="text-left py-3 text-gray-600">Time</th>
+            <th class="text-left py-3 text-gray-600">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of transactionsArr; track $index) {
+          <tr class="border-b hover:bg-gray-50">
+            <td class="py-4">{{ item.name }}</td>
+            <td class="py-4">{{ item.date | date : 'short' }}</td>
+            <td class="py-4 font-bold">{{ item.total }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>

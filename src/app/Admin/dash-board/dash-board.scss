@@ -1,0 +1,12 @@
+.lowstock::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #5db839;
+  border-radius: 5px;
+}
+.lowstock::-webkit-scrollbar-thumb {
+  background-color: #4d7fff;
+  border-radius: 4px;
+}

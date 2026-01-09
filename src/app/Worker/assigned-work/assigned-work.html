@@ -1,0 +1,70 @@
+<div class="min-h-screen bg-gray-50 text-gray-800 p-4 md:p-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+      <div><h1 class="text-2xl font-bold">My Tasks</h1></div>
+      <div>
+        <select
+          (change)="filterTasks()"
+          class="outline-none bg-indigo-100 py-1 px-3 rounded cursor-pointer"
+          [(ngModel)]="filterVal"
+        >
+          <option value="All">All</option>
+          <option value="High ">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tasks Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (task of tasksArr; track $index) {
+      <div class="bg-white border rounded-xl shadow-sm p-5 flex flex-col">
+        <div class="mb-3 flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900">
+              {{ task.title }}
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ task.taskDesc }}
+            </p>
+          </div>
+          <div>
+            @if(task.status === 'Pending'){
+
+            <button
+              (click)="markDone(task.id)"
+              class="px-3 py-1 cursor-pointer border border-green-200 font-medium text-green-500 rounded bg-green-50 hover:bg-green-100 hover:text-green-600 text-sm"
+            >
+              Mark Done
+            </button>
+            } @else {
+            <button
+              class="px-3 py-1 bg-gray-200 border border-gray-200 rounded font-medium text-gray-600 text-sm"
+            >
+              Completed</button
+            >}
+          </div>
+        </div>
+
+        <div class="mt-auto flex items-center justify-between text-sm">
+          <span class="text-gray-500">Due Date</span>
+          <span
+            [ngClass]="task.daysLeft <= 2 ? ' text-red-500' : 'text-green-500'"
+            class="font-medium"
+          >
+            {{ task.dueDate | date : 'short' }}
+          </span>
+          <span>Pirorty:{{ task.priority }}</span>
+        </div>
+      </div>
+      }
+    </div>
+
+    @if (tasksArr.length === 0) {
+    <div class="bg-white border rounded-xl p-8 text-center text-gray-500">
+      No tasks assigned yet.
+    </div>
+    }
+  </div>
+</div>
