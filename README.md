@@ -1,6 +1,9 @@
 # Pharmacy
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
 
+Demo
+https://pharmacy-8ea3f.web.app/worker
+
 ## Development server
 
 To start a local development server, run:
